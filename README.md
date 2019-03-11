@@ -33,16 +33,7 @@ Installation
 
 The source code for Elma [is on Github](https://github.com/klavinslab/elma).
 
-From Dockerhub
----
 
-To get started, you will need a C++ build environment. We have provided one with the Docker container `elma`, which you can use as follows:
-
-    git clone https://github.com/klavinslab/elma.git
-    cd elma
-    docker run -v $PWD:/source -it klavins/ecep520:elma bash
-    make
-    examples/bin/basic
 
 References
 ---
