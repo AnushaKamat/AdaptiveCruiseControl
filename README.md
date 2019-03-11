@@ -28,6 +28,13 @@ Milestones
 4. Write the test cases and get the testing done. Date : 01/20
 5. Submit documentation with tests. Date : 01/22
 
+Strech Goals
+---
+1. Interaction of car enabled with ACC with a regular car
+2. Car with Camera function and not ACC. - which could read sign boards and change the speed of car dynamically till driver intervenes.
+3. Simulation of Car with respect to ACC enabled Car.
+4. Plot of distance covered by regular car vs the distance covered by ACC enabled car wrt time.(depicting its speed curve)
+
 Installation
 ---
 
