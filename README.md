@@ -22,11 +22,11 @@ Implementation Details
 
 Milestones 
 ---
-1. Talk to Professor about the project and it's feasibility. Date : 01/09 -DONE
-2. Create ACC class and share events between driver, car and ACC. Date : 01/13
-3. Create driving environment where another interacts with car enabled with ACC. Date : 01/17
-4. Write the test cases and get the testing done. Date : 01/20
-5. Submit documentation with tests. Date : 01/22
+1. Talk to Professor about the project and it's feasibility. Date : 03/09 -DONE
+2. Create ACC class and share events between driver, car and ACC. Date : 03/13
+3. Create driving environment where another interacts with car enabled with ACC. Date : 03/17
+4. Write the test cases and get the testing done. Date : 03/20
+5. Submit documentation with tests. Date : 03/22
 
 Strech Goals
 ---
