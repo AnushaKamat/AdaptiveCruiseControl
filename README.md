@@ -22,27 +22,25 @@ Implementation Details
 
 Milestones 
 ---
-1. Talk to Professor about the project and it's feasibility. Date : 01/09 -DONE
-2. Create ACC class and share events between driver, car and ACC. Date : 01/13
-3. Create driving environment where another interacts with car enabled with ACC. Date : 01/17
-4. Write the test cases and get the testing done. Date : 01/20
-5. Submit documentation with tests. Date : 01/22
+1. Talk to Professor about the project and it's feasibility. Date : 03/09 -DONE
+2. Create ACC class and share events between driver, car and ACC. Date : 03/13
+3. Create driving environment where another interacts with car enabled with ACC. Date : 03/17
+4. Write the test cases and get the testing done. Date : 03/20
+5. Submit documentation with tests. Date : 03/22
+
+Strech Goals
+---
+1. Interaction of car enabled with ACC with a regular car
+2. Car with Camera function and not ACC. - which could read sign boards and change the speed of car dynamically till driver intervenes.
+3. Simulation of Car with respect to ACC enabled Car.
+4. Plot of distance covered by regular car vs the distance covered by ACC enabled car wrt time.(depicting its speed curve)
 
 Installation
 ---
 
 The source code for Elma [is on Github](https://github.com/klavinslab/elma).
 
-From Dockerhub
----
 
-To get started, you will need a C++ build environment. We have provided one with the Docker container `elma`, which you can use as follows:
-
-    git clone https://github.com/klavinslab/elma.git
-    cd elma
-    docker run -v $PWD:/source -it klavins/ecep520:elma bash
-    make
-    examples/bin/basic
 
 References
 ---
