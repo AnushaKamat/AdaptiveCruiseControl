@@ -39,7 +39,7 @@ namespace elma {
         Manager& stop();
 
         Manager& run(high_resolution_clock::duration);
-
+        Manager& simrun(high_resolution_clock::duration);
         //! Getter
         //! \return The time the Manager was most recently started
         inline high_resolution_clock::time_point start_time() { return _start_time; }

@@ -135,5 +135,24 @@ namespace elma {
         return *this;
 
     }
+    //! Run the manager for the specified amount of time in simulation.
+    //! \param The desired amount of time to run
+    //! \return A reference to the manager, for chaining
+    Manager& Manager::simrun(high_resolution_clock::duration runtime) {
+
+        _start_time = high_resolution_clock::now();
+        _elapsed = high_resolution_clock::duration::zero();
+        start();        
+
+        while ( _elapsed < runtime ) {
+            update();
+            _elapsed = (high_resolution_clock::now() - _start_time)*10;
+        }
+
+        stop();
+
+        return *this;
+
+    }
 
 }
