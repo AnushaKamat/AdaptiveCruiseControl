@@ -11,7 +11,8 @@ using namespace elma;
 namespace driving_example {
 
     //! Example: Another car simulation process. See examples/driving.cc.
-
+    typedef enum { REGULAR, CC, ACC } car_type;
+    const double KP = 314.15;
     //! See the file examples/driving.cc for usage.
     class Car : public Process {
         public:
@@ -20,6 +21,8 @@ namespace driving_example {
         //! \param name The name of the car    
         Car(std::string name) : Process(name) {}
 
+        //Car(std::string name,car_type model) : Process(name) {}
+            
         //! Nothing to do to initialize
         void init() {}
 
@@ -34,13 +37,13 @@ namespace driving_example {
         //! car's velocity, and sends it out on the Velocity
         //! Channel.     
         void update() {
+            
             if ( channel("Throttle").nonempty() ) {
                 force = channel("Throttle").latest();
             }
             velocity += ( delta() / 1000 ) * ( - k * velocity + force ) / m;
             channel("Velocity").send(velocity);
-            std::cout << milli_time() << ","
-                    << velocity << " \n";
+            std::cout << milli_time() << "," << velocity << " \n";
         }
 
         //! Nothing to do to stop    
@@ -51,8 +54,9 @@ namespace driving_example {
         double force;
         const double k = 0.02;
         const double m = 1000;
+        car_type model;
     };  
-
+    
     //! Example: A cruise controller for a Car process.  See examples/driving.cc.
 
     //! See the file examples/driving.cc for usage.
@@ -90,7 +94,7 @@ namespace driving_example {
         private:
         double speed = 0;
         double desired_speed = 0.0;
-        const double KP = 314.15;
+        
                     vector<double> _v;
     };
 
@@ -114,12 +118,29 @@ namespace driving_example {
         //! If the desired speed is 50, change to 60,
         //! otherwise change to 50.
         void update() {
-            if ( desired_speed == 50 ) {
-                desired_speed = 60;
-            } else {
+            /*if ( desired_speed == 50 ) {
+                desired_speed = 60;             //Driver must emit CC_on event - then car operates with CC mode or else bypasses directly to accped mode
+            } else {                            //Driver emits CC_off or -ve throttle >> CC mode off
+                                                //
                 desired_speed = 50;
+            }*/
+            if(CC_on){                          //if CC_off or throttle goes negative - CC switches off
+                desired_speed = 10;
+                accped =0;
+                std::cout << "CC_on : "<<CC_on <<std::endl;
+                CC_on =0;
+
+                emit(Event("desired speed", desired_speed));
             }
-            emit(Event("desired speed", desired_speed));
+            else{
+                desired_speed =0;
+                accped = 5;
+                
+                std::cout << "CC_on : "<<CC_on <<std::endl;
+                CC_on = 1;
+                channel("Throttle").send(-KP*accped);
+            }
+            
         }
 
         //! Nothing to do to stop
@@ -127,8 +148,11 @@ namespace driving_example {
 
         private:
         double desired_speed;
+        double accped;
+        bool CC_on = 1;
 
     };
+    
 
 }
 
@@ -136,18 +160,22 @@ int main() {
 
     Manager m;
 
-    driving_example::Car car("Car");
+    driving_example::Car acar("CarA"); // can specify type of car in constructor, Regular,CC,ACC,Camera
     driving_example::CruiseControl cc("Control");
     driving_example::Driver driver("Steve");
     Channel throttle("Throttle");
     Channel velocity("Velocity");
+    //Channel brake("Brake");
+    Channel safetydistance("SafetyDistance");
 
-    m.schedule(car, 100_ms)
+    m.schedule(acar, 100_ms)
     .schedule(cc, 100_ms)
     .schedule(driver, 5_s)
     .add_channel(throttle)
     .add_channel(velocity)
+    //.add_channel(brake)
+    .add_channel(safetydistance)
     .init()
-    .run(40_s);
+    .simrun(40_s);
 
 }
