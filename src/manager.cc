@@ -123,13 +123,12 @@ namespace elma {
 
         _start_time = high_resolution_clock::now();
         _elapsed = high_resolution_clock::duration::zero();
-        start();        
-
+        start();
         while ( _elapsed < runtime ) {
             update();
             _elapsed = high_resolution_clock::now() - _start_time;
         }
-
+        
         stop();
 
         return *this;

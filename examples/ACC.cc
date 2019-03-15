@@ -11,7 +11,7 @@ using namespace elma;
 namespace driving_example {
 
     //! Example: Another car simulation process. See examples/driving.cc.
-    typedef enum { REGULAR, CC, ACC } car_type;
+    //typedef enum { REGULAR, CC, ACC } car_type;
     const double KP = 314.15;
     //! See the file examples/driving.cc for usage.
     class Car : public Process {
@@ -37,13 +37,13 @@ namespace driving_example {
         //! car's velocity, and sends it out on the Velocity
         //! Channel.     
         void update() {
-            
-            if ( channel("Throttle").nonempty() ) {
+           if ( channel("Throttle").nonempty() ) {
                 force = channel("Throttle").latest();
             }
             velocity += ( delta() / 1000 ) * ( - k * velocity + force ) / m;
             channel("Velocity").send(velocity);
             std::cout << milli_time() << "," << velocity << " \n";
+            
         }
 
         //! Nothing to do to stop    
@@ -54,6 +54,7 @@ namespace driving_example {
         double force;
         const double k = 0.02;
         const double m = 1000;
+        int status; // 0 - regular mode, 1 - CC 
         car_type model;
     };  
     
@@ -70,8 +71,8 @@ namespace driving_example {
 
         //! Watch for events that change the desired speed.
         void init() {
-            watch("desired speed", [this](Event& e) {
-                desired_speed = e.value();
+            watch("CC status", [this](Event& e) {
+                CC_status = e.value();
             });
         }
 
@@ -82,10 +83,15 @@ namespace driving_example {
         //! a simple proportional control law, and send the result
         //! to the Throttle channel.    
         void update() {
-            if ( channel("Velocity").nonempty() ) {
-                speed = channel("Velocity").latest();
+            if(CC_status){
+                if ( channel("Velocity").nonempty() ) {
+                    speed = channel("Velocity").latest();
+                }
+                if(channel("DesSpeed").nonempty()){
+                    desired_speed = channel("DesSpeed").latest();
+                }
+                channel("Throttle").send(-KP*(speed - desired_speed));
             }
-            channel("Throttle").send(-KP*(speed - desired_speed));
         }
 
         //! Nothing to do to stop    
@@ -94,8 +100,7 @@ namespace driving_example {
         private:
         double speed = 0;
         double desired_speed = 0.0;
-        
-                    vector<double> _v;
+        int CC_status;    
     };
 
     //! Example: A simulated driver, who keeps cycling between 50 and 60 kph.  See examples/driving.cc.
@@ -118,29 +123,25 @@ namespace driving_example {
         //! If the desired speed is 50, change to 60,
         //! otherwise change to 50.
         void update() {
-            /*if ( desired_speed == 50 ) {
-                desired_speed = 60;             //Driver must emit CC_on event - then car operates with CC mode or else bypasses directly to accped mode
-            } else {                            //Driver emits CC_off or -ve throttle >> CC mode off
-                                                //
-                desired_speed = 50;
-            }*/
-            if(CC_on){                          //if CC_off or throttle goes negative - CC switches off
-                desired_speed = 10;
-                accped =0;
-                std::cout << "CC_on : "<<CC_on <<std::endl;
+            std::cout<<"CC status : " <<CC_on <<std::endl;
+            if(CC_on){
+                emit(Event("CC status",CC_on));
+                if(desired_speed == 50){
+                    desired_speed = 60;             //Driver must emit CC_on event - then car operates with CC mode or else bypasses directly to accped mode
+                } 
+                else {                            //Driver emits CC_off or -ve throttle >> CC mode off
+                    desired_speed = 50;
+                }
                 CC_on =0;
+                channel("DesSpeed").send(desired_speed);
 
-                emit(Event("desired speed", desired_speed));
             }
             else{
-                desired_speed =0;
-                accped = 5;
-                
-                std::cout << "CC_on : "<<CC_on <<std::endl;
-                CC_on = 1;
+                accped =5;
+                emit(Event("CC status",CC_on));
+                CC_on= 1;
                 channel("Throttle").send(-KP*accped);
             }
-            
         }
 
         //! Nothing to do to stop
@@ -149,11 +150,8 @@ namespace driving_example {
         private:
         double desired_speed;
         double accped;
-        bool CC_on = 1;
-
+        bool CC_on = 0;
     };
-    
-
 }
 
 int main() {
@@ -165,7 +163,9 @@ int main() {
     driving_example::Driver driver("Steve");
     Channel throttle("Throttle");
     Channel velocity("Velocity");
+    //Channel ccstatus("CC status");
     //Channel brake("Brake");
+    Channel des_speed("DesSpeed");
     Channel safetydistance("SafetyDistance");
 
     m.schedule(acar, 100_ms)
@@ -173,9 +173,8 @@ int main() {
     .schedule(driver, 5_s)
     .add_channel(throttle)
     .add_channel(velocity)
-    //.add_channel(brake)
+    .add_channel(des_speed)
     .add_channel(safetydistance)
     .init()
     .simrun(40_s);
-
 }
