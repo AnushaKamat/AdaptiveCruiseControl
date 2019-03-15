@@ -11,7 +11,7 @@ using namespace elma;
 namespace driving_example {
 
     //! Example: Another car simulation process. See examples/driving.cc.
-    //typedef enum { REGULAR, CC, ACC } car_type;
+    typedef enum { REGULAR, CC, ACC } car_type;
     const double KP = 314.15;
     //! See the file examples/driving.cc for usage.
     class Car : public Process {
