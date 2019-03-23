@@ -2,8 +2,10 @@ Adaptive Cruise Control based on elma
 ===
 Overview
 ---
-Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.
+<p>
+Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.<p/>
 <br/>
+<p>
 The project models a Car :car: which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver.
 The modes the Car can be driven into are as below:
 - Regular Mode (`REGULAR`): `Driver` has to press acceleration pedal and Car moves in proportion to it.Default Conditions: Acceleration pedal(`accped`) is set to 15. Just for simulation.
