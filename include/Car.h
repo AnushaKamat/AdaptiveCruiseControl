@@ -11,15 +11,13 @@ namespace driving_environment {
 
     typedef enum { REGULAR, CC , ACC} car_type;
     const double KP = 314.15;
-
+ //! A Process class to represent Car
     class Car : public Process {
         public:
 
         //! Wrap the base process class
         //! \param name The name of the car    
         Car(std::string name) : Process(name) {}
-
-        //Car(std::string name,car_type model) : Process(name) {}
             
         //! Nothing to do to initialize
         void init() {}
@@ -51,6 +49,5 @@ namespace driving_environment {
     };  
 
 }
-    
 
 #endif

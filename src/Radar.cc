@@ -19,18 +19,12 @@ void Radar::init() {
     });
 }
 
-
-//! The update method gets the latest force from the 
-//! Throttle Channel, if any. Then it updates the 
-//! car's velocity, and sends it out on the Velocity
-//! Channel.     
+//! The update method checks if ACC is on , 
+//! It emits event Obstacle 
+//! It gives out the distance of the obstacle from car that it can sense     
 void Radar::update() {
     if(ACC_status){
     emit(Event("Obstacle",get_obstacle_dist()));
     //std::cout << " Obstacle distance set to : " << get_obstacle_dist() <<"\n";
     }
 }
-
-
-
-   

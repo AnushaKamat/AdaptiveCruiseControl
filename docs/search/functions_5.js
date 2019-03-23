@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flush',['flush',['../classelma_1_1Channel.html#ad88b1d47f43aff5f332418cc58ded617',1,'elma::Channel']]]
+  ['radar',['Radar',['../classdriving__environment_1_1Radar.html#ac44b113da19112d28aa7da5f24f6766b',1,'driving_environment::Radar']]]
 ];

@@ -10,93 +10,47 @@ using std::vector;
 using namespace elma;
 using namespace driving_environment;
 
-//! Example: A simulated driver, who keeps cycling between 50 and 60 kph.  See examples/driving.cc.
 
-
-//! initialize the desired speed
-void Driver::init() {
-    //desired_speed = 50;
-    //sfdist = 5;
-}
-
-//! If the desired speed is 50, change to 60,
-//! otherwise change to 50.
+//! This is like a front end method.
+//! User can set the parameters using setters
+//! The update method depending upon the setting of ACC_on and CC_on 
+//! switches , sets the operation mode for the car i.e; either REGULAR, CC or ACC
+//! when both CC_on and ACC_on is OFF(0), then car operates in REGULAR mode
+//! when ACC_on is set , car operates in ACC (Adaptive Cruise Control) mode
+//! when CC_on is set, car operates in CC(Cruise Control) Mode
+//! if both CC_on and ACC_on is set then ACC gets precedence and CC is internally is set to OFF
+//! Depending on the operation mode set by driver, the events are emited.
+//! if ACC, ACC status is emited, safety distance and Desired speed set by driver is
+//! also sent on the channels SafetyDistance and DesSpeed respectively
+//! In case of CC, CC status is emitted and desired_speed set by the driver is sent on 
+//! DesDpeed channel
+//! In case of Regular mode, the driver presses acceleration pedal (accped)
+//! and the force applied is sent over Throttle channel
 void Driver::update() {
-    //std::cout<<"operation mode : " <<operation_mode <<std::endl;
     //std::cout<<"CC status : " <<CC_on << std::endl;
     //std::cout<<"ACC status : " <<ACC_on << std::endl;
+    
     if(CC_on == 0 && ACC_on == 0 ){
         operation_mode = REGULAR;
         emit(Event("CC status",CC_on));
-        emit(Event("ACC status",ACC_on));   
+        emit(Event("ACC status",ACC_on));  
+        channel("Throttle").send(KP*accped); 
     }
     else if(ACC_on == 1){
         operation_mode = ACC;
         if(CC_on){
             CC_on =0;
         }
+        //std::cout<<"Desired Speed : " << desired_speed <<std::endl;
+        //std::cout<<"Safety Distance : " << sfdist <<std::endl;
+        emit(Event("ACC status",ACC_on));
+        channel("SafetyDistance").send(sfdist);
+        channel("DesSpeed").send(desired_speed);
     }
     else{
         operation_mode = CC;
-    }
-    
-    switch (operation_mode){
-        case ACC :      ACC_on = 1;
-                        //std::cout <<"In ACC now, ACC_on : "<< ACC_on <<"operation_mode : "<<operation_mode<<"\n";
-                       
-                        emit(Event("ACC status",ACC_on));
-                        /*if(desired_speed == 50){
-                            desired_speed = 30;             //Driver must emit CC_on event - then car operates with CC mode or else bypasses directly to accped mode
-                        } 
-                        else {                            //Driver emits CC_off or -ve throttle >> CC mode off
-                            desired_speed = 50;
-                        }*/
-                        
-                        //sfdist = 4;
-
-                        //std::cout <<"1.Desired Speed :  " << desired_speed <<std::endl;
-                        //std::cout <<"2.Safety Distance :  "<<sfdist << std::endl;
-                        channel("SafetyDistance").send(sfdist);
-                        channel("DesSpeed").send(desired_speed);
-                        //std::cout <<"here 2 \n";
-                        //operation_mode = REGULAR;
-                        break;
-
-        case CC :       CC_on = 1;
-                        emit(Event("CC status",CC_on));
-                        //std::cout <<"WHYYYYY In CC now, CC_on : "<< CC_on <<"operation_mode : "<<operation_mode<<"\n";
-                        /*if(desired_speed == 50){
-                            desired_speed = 60;             //Driver must emit CC_on event - then car operates with CC mode or else bypasses directly to accped mode
-                        } 
-                        else {                            //Driver emits CC_off or -ve throttle >> CC mode off
-                            desired_speed = 50;
-                        }*/
-                        //std::cout <<"here 2 \n";
-                        channel("DesSpeed").send(desired_speed);
-                        //operation_mode = REGULAR;
-                        break;
-
-        case REGULAR:   //accped =45;
-                        //std::cout << "In regular accped mode : "<<accped <<"\n";
-                        /*
-                        if(ACC_on ==1){
-                            operation_mode = ACC;
-                        }
-                        else
-                            if (CC_on == 1){
-                            operation_mode = CC;
-                        }*/
-                        channel("Throttle").send(KP*accped);
-
-                        
-                        break;
-    }
-
-    
+        //std::cout<<"Desired Speed : " << desired_speed <<std::endl;
+        emit(Event("CC status",CC_on));
+        channel("DesSpeed").send(desired_speed);
+    }  
 }
-
-double Driver::get_desired_speed(void){
-    return desired_speed;
-}
-
-

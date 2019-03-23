@@ -10,11 +10,7 @@ using std::vector;
 using namespace elma;
 using namespace driving_environment;
 
-//! Example: A cruise controller for a Car process.  See examples/driving.cc.
-
-
-
-//! Watch for events that change the desired speed.
+//! Watch for events that change the status of CC switch.
 void CruiseControl::init() {
     watch("CC status", [this](Event& e) {
         CC_status = e.value();
@@ -22,7 +18,8 @@ void CruiseControl::init() {
 }
 
 
-//! Get the velocity from the Velocity Channel, compute
+//! Get the velocity from the Velocity Channel, 
+//! Get the desired speed from DesSpeed Channel,compute
 //! a simple proportional control law, and send the result
 //! to the Throttle channel.    
 void CruiseControl::update() {
@@ -34,9 +31,7 @@ void CruiseControl::update() {
         if(channel("DesSpeed").nonempty()){
             desired_speed = channel("DesSpeed").latest();
         }
-        //std::cout <<"Am I here ?? WHy \n";
+        //std::cout <<"desired_speed "<<desired_speed<<"\n";
         channel("Throttle").send(-KP*(speed - desired_speed));
     }
 }
-
-

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Elma: README.md Source File</title>
+<title>Adaptive Cruise Control: README.md Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -24,7 +24,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Elma
+   <div id="projectname">Adaptive Cruise Control
    </div>
    <div id="projectbrief">An event loop manager for embedded systems</div>
   </td>
@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -84,67 +84,148 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">README.md</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Elma</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Adaptive Cruise Control based on elma</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;===</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Elma is an event loop and process manager for embedded systems. Elma is structured as a C++ library of classes on top of which you build your own C++ project. It keeps track of processes, finite state machines, events, and communication channels, executing them at specified frequencies. Elma was developed as part of the University of Washington&#39;s [ECE P 520 course](https://github.com/klavins/ECEP520) on advanced embedded systems programming. More information on how Elma was designed can be found in the links below:</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;- [Event loop management](https://github.com/klavins/ECEP520/tree/master/week_6)</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;- [Events and finite state machines](https://github.com/klavins/ECEP520/tree/master/week_7)</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;- [HTTP in event loops](https://github.com/klavins/ECEP520/blob/master/week_8)</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Installation</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;===</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;The source code for Elma [is on Github](https://github.com/klavinslab/elma).</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;From Dockerhub</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;---</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;To get started, you need a C++ build environment. We have provided one with the Docker container `elma`, which you can use as follows:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    git clone https://github.com/klavinslab/elma.git</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    cd elma</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    docker run -v $PWD:/source -it klavins/ecep520:elma bash</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    make</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    examples/bin/basic</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;From the Dockerfile</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;---</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;You can also build the docker environment, described in env/Dockerfile, yourself with the following commands:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    git clone https://github.com/klavinslab/elma.git</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    cd elma</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    docker build -t myelma env</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    docker run -v $PWD:/source -it myelma bash</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    make</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    examples/bin/basic</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;Manual Installation</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;---</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;To install Elma without using Docker, you will need the following tools:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;- [gcc](https://gcc.gnu.org/) 4.9 or an equivalent C/C++ compiler that supports at least C++14</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;- Make (if you want to use the makefile. Alternatively, you can use some other build manager)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;- [Doxygen](http://www.doxygen.nl/)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;- [Google Test](https://github.com/google/googletest)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;- Neils Lohmann&#39;s JSON library: https://github.com/nlohmann/json</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;- [My fork](https://github.com/klavins/cpp-httplib.git) of [yhirose](https://github.com/yhirose)&#39;s HTTP library</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;Usage</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;===</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;See the examples in the `examples` directory for how to build new event loops with Elma.</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;Scenario</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;---</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;In-depth Design and Working</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;---</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;The project models a Car which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver.</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;The modes the Car can be driven into are as below:</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;- Regular Mode (`REGULAR`): `Driver` has to press acceleration pedal and Car moves in proportion to it.Default Conditions: Acceleration pedal(`accped`) is set to 15. Just for simulation.</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;- Cruise Control Mode (`CC`) : `Driver` has to switch on a `CC_on` switch, to put the Car into `CC` mode.Driver sets a `desired_speed` at which he would like the Car to cruise on.Default Conditions : The `desired_speed` if not set by driver while being in `CC` mode is set to 50</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;- Adaptive Cruise Control Mode(`ACC`): `Driver` has to switch on a `ACC_on` switch, to put the Car into `ACC` mode.Driver sets a desired_speed at which he would like the Car to cruise on and sets a safety distance `sfdist` which allows the `Car` to cruise at set `desired_speed` if no obstacle is within that distance.Default Conditions : The `desired_speed` if not set by driver while being in CC mode is set to 50 and `sfdist` is set 5.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;Edge Cases:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;- The Car if not exclusively set to a different mode by driver, runs in REGULAR mode.</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;- If both `ACC_on` and `CC_on` are switched on at the same time then, `ACC` mode is set with `ACC_on` being 1 and `CC_on` being forced to 0.</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;The `CruiseControl` module gets the `velocity` of `Car` and `desired_speed` set by `Driver`.If the `CC_on` is switched on,i.e; if `Car` is in `CC` mode, it computes the change in force that needs to be applied so the Car keeps moving with `desired_speed` using the proportional control law. The computed result is sent over Throttle channel</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;The `AutoCruiseControl` module gets activated when `ACC_on` is set by the `Driver` and the `Car` is in `ACC` mode. It gets the current `velocity` of `Car` and procures `desired_speed` and safety distance `sfdist`set by `Driver`.Also it is interrupted by `Radar` module which provides it with information about how far is the obstacle sensed is at. `ACC` module cruises on the set `desired_speed` if there are no obstacles within `sfdist` set by driver. If an obstacle is found then it decreases its speed to avoid collision and once the obstacle is no more in the safe distance range, it continues to cruise on `desired_speed`.Also as a safety feature, the `ACC` does not go below the `lowspeed` value.</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;A helper class module `Radar` is created which emits the obstacle distance.This has to be set by user while testing and by default the obstacle distance is set high to give a sense of no obstacles are present.</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;Design Details/Working(Added on 3/17):</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;---</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;- Cruise Control is being redesigned.</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    - Driver sets Cruise On/Off which is emitted as an event to CruiseControl class</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    - When CC is switched on , the driver also sets the desired speed which is sent over the channel.</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    - CruiseControl class has an handler for change in `CC_on`</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    - CruiseControl class sets the value of throttle accordingly and sends it over channel to the Car class.</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    - Car class, depending on the current velocity of the car and new throttle value, sets the new speed of the car.</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;- Adaptive Cruise Control is designed in the class `AutoCruiseControl`.</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    - Driver switches on `ACC_on` switch to enable Adaptive Cruise Control to kick in.This triggers an event.</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    - When ACC is switched on, Driver has to set desired speed and safety distance.</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    - In AutoCruiseControl class, depending on `ACC status` event, the desired speed, safety distance and current velocity of Car is read in.</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    - In addition to this, ACC is being catered to by another class called Radar inherited from Process.</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        Radar sends the distance from the car to the next obstacle.</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    - In ACC, if obstacle is farther than safety distance, the ACC keeps cruising at the same desired speed set by the driver.</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    - If ACC finds that obstacle is in the range of safety distance set, in order to prevent damage, it decreases the desired speed in proportion to the distance between obstacle and safe distance of Car, until it can maintain the safe distance from the obstacle. &lt;br/&gt;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    Assumptions: &lt;br/&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    The obstacle is also contsantly moving wrt to car either at slow speed or higher speed than that of ACC car.</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;Implementation Details</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;---</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;- Car would be inherited by a process class</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;- Cruise Control would be inherited by a process class</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;License</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;===</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;This software is open source and uses the MIT license. Details can be found [here](https://github.com/klavinslab/elma).</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;- Adaptive Cruise Control would be inherited either by Cruise Control/Process(Design choice).</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    It will set Adaptive Cruise control speed depending on </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    - speed set by driver</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    - another car/obstacle in the safety distance</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;- Driver would be inherited by process class with below operations in scope</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    - set speed</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    - set safety distance</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    - set the Car into different Modes</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;Milestones </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;---</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;1. Talk to Professor about the project and it&#39;s feasibility. Date : 03/09 -DONE</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;2. Create ACC class and share events between driver, car and ACC. Date : 03/13&lt;br/&gt;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    DONE :&lt;br/&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        - 3/15 : Cruise Control is modified/ Simulated Time run is created&lt;br/&gt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        - 3/16 : Different Classes for CC and ACC. Driver Class is modified to accomodate different driving styles.</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;3. Create driving environment where another interacts with car enabled with ACC. Date : 03/17&lt;br/&gt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    DONE : &lt;br/&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        - 3/17 : Tested the driving scenarios using the environment.&lt;br/&gt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        - 3/19 : Modularise ACC example with different classes in different files.&lt;br/&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        - 3/19 : Adapt to ELMA project Folder structure. &lt;br/&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        - 3/20 : Check the new pull for Simulated Run and compare with existing one. &lt;br/&gt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;4. Write the test cases and get the testing done.&lt;br/&gt; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    DONE:&lt;br/&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        - 03/20 : Multiple Test cases have been written.</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            - Checks Regular , CC and ACC mode separately</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            - Checks transistion from one mode to other.</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            - Checks CC with change in desired speed set by driver</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            - Checks ACC with chanage in desired speed set by driver</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            - Checks ACC with change in desired safety distance set by driver</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            - Checks ACC with combination of change in desired speed and safety distance</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            - Created a simulation of obstacle to check ACC speed decrease in case of obstacle detection.</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;5. Submit documentation with tests. Date : 03/22 - DONE</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;Strech Goals</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;---</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;1. Interaction of car enabled with ACC with a regular car.&lt;br/&gt;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    DONE: Interaction of ACC enabled car with moving obstacle is met. Obstacle is modelled as a part of Radar capabilities.</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;2. Car with Camera function and not ACC. - which could read sign boards and change the speed of car dynamically till driver intervenes.</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    - Dealt with 3 cases and did not venture into Car with Camera.</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;3. Simulation of Car with respect to ACC enabled Car.</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    - DONE(Partially) : Modified it to deal ACC enabled car with any moving obstacle, havent modelled obstacle exactly as a car. But could be perceived as one. See Test Cases.</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;4. Plot of distance covered by regular car vs the distance covered by ACC enabled car wrt time.(depicting its speed curve)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    - Provided</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;5. [3/17] Consider having a UI using ncurses.</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    - Started working on it but felt many things have to be modelled for the display.</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;Installation</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;---</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;The source code for Elma [is on Github](https://github.com/klavinslab/elma).</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;Also forked in this project.</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;It is being directly used with help of docker as shown below.</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;From Dockerhub</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;---</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;To get started, you will need a C++ build environment. The Docker container `elma` is available on Dockerhub, which can be used as follows:</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    git clone https://github.com/AnushaKamat/AdaptiveCruiseControl.git</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    cd AdaptiveCruiseControl</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    docker run -v $PWD:/source -it klavins/elma:latest bash</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    make</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    ./bin/Regular </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    ./bin/test     </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;References</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;---</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;The example of Adaptive Cruise Control is mainly built on [elma](https://github.com/klavinslab/elma) library using following references:</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;- [gcc](https://gcc.gnu.org/)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;- [Doxygen](http://www.doxygen.nl/)</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;- [Google Test](https://github.com/google/googletest)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;- Neils Lohmann&#39;s JSON library: https://github.com/nlohmann/json</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;- [yhirose](https://github.com/yhirose)&#39;s HTTP library</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;- Docker Image [klavins/ecep520](https://hub.docker.com/r/klavins/ecep520)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;License</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;---</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;This software is open source and uses the MIT license. Details can be found [here](https://github.com/klavinslab/elma).</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Tue Mar 5 2019 21:55:43 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Sat Mar 23 2019 01:27:47 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.8
   </small></address>

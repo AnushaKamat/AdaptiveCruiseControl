@@ -3,7 +3,6 @@
 #include <string>
 #include <chrono>
 #include <float.h>
-//#include"matplotlibcpp.h"
 #include "gtest/gtest.h"
 #include "Driver.h"
 
@@ -12,30 +11,29 @@ namespace {
     using namespace elma;
     using namespace driving_environment;
 
-    double tolerance = 0.02;
-    //Simulation classes
+    double tolerance = 1;
+    //! Simulation classes
+    //! A Radar Class to simulate an obstacle that cycles from 7 to 3 units of distance and keep moving further
     class Obstacle : public Radar{
         public:
             Obstacle (std::string name) : Radar(name) {}
             void update(){
-                if(get_obstacle_dist() == 7){  
+                if(get_obstacle_dist() == 15){      //7 changed to 12 
                     set_obstacle_dist(3);
                 }
                 else{                           
                     set_obstacle_dist(get_obstacle_dist()+1);
                 }
                 emit(Event("Obstacle",get_obstacle_dist()));
-                //std::cout  << " Obstacle distance in new class : " << get_obstacle_dist() <<"\n";
             }
     };
 
+    //! A Driver class to simulate a driver who drives car in Cruise Control Mode and
+    //! switches between setting the desired_speed from 50 to 60 units of speed
     class SimCCDriver : public Driver{
         public:
         SimCCDriver(std::string name) : Driver(name){}
             void update() {
-                //std::cout<<"operation mode : " <<get_car_type() <<std::endl;
-                //std::cout<<"CC status : " <<get_CC_status() << std::endl;
-                //std::cout<<"Should increase if 50, decrease if 60 ,Desired speed : "<<get_desired_speed()<<std::endl;
                 if(get_CC_status()){
                     set_car_type(CC);
                 }
@@ -50,6 +48,7 @@ namespace {
                     else {                            //Driver emits CC_off or -ve throttle >> CC mode off
                         set_desired_speed(50);
                     }
+                    //std::cout << "New Set speed : " << get_desired_speed() <<std::endl;
                     channel("DesSpeed").send(get_desired_speed());
                 }
                 else{
@@ -58,14 +57,13 @@ namespace {
             }
     };
 
+    //! A Driver Class that simulates driving a Adaptive Cruise Control
+    //! Here the driver cycles between setting desired speed from 30 to 50 kph
+    //! Also this driver has kept the safety distance set as default and not changing it manually
     class SimACCDriver : public Driver{
         public:
         SimACCDriver(std::string name) : Driver(name){}
             void update() {
-                
-                //std::cout<<"CC status : " <<get_CC_status() << std::endl;
-                //std::cout<<"Should decrease if 50, increase if 30 ,Desired speed : "<<get_desired_speed()<<std::endl;
-                //std::cout << "Safe Distance set : " <<get_safe_distance()<<std::endl;
                 if(get_ACC_status()){
                     set_car_type(ACC);
                 }
@@ -81,6 +79,7 @@ namespace {
                     else {                            //Driver emits CC_off or -ve throttle >> CC mode off
                         set_desired_speed(50);
                     }
+                    //std::cout << "New Set speed : " << get_desired_speed() <<std::endl;
                     channel("SafetyDistance").send(get_safe_distance());
                     channel("DesSpeed").send(get_desired_speed());
                 }
@@ -90,15 +89,14 @@ namespace {
             }
     };
 
+    //! A Driver Class that simulates driving a Adaptive Cruise Control
+    //! Here the driver sets a desired speed
+    //! And keeps changing the safety distance in the driving 
     class SimACCDriver2 : public Driver{
         public:
         SimACCDriver2(std::string name) : Driver(name){}
             void update() {
-                set_desired_speed(50);
-                //std::cout<<"operation mode : " <<get_car_type() <<std::endl;
-                //std::cout<<"CC status : " <<get_CC_status() << std::endl;
-                //std::cout<<"Speed is set to 50 : "<<get_desired_speed()<<std::endl;
-                //std::cout << "If 4, it should be in 50, if 6 it should be less. Safe Distance set : " <<get_safe_distance()<<std::endl;
+                set_desired_speed(30);
                 if(get_ACC_status()){
                     set_car_type(ACC);
                 }
@@ -114,6 +112,7 @@ namespace {
                     else {                            //Driver emits CC_off or -ve throttle >> CC mode off
                         set_safe_distance(4);
                     }
+                    //std::cout <<"Safety Distance is changed to : " << get_safe_distance()<<std::endl;
                     channel("SafetyDistance").send(get_safe_distance());
                     channel("DesSpeed").send(get_desired_speed());
                 }
@@ -122,10 +121,12 @@ namespace {
                 }
             }
     };
-    //Write Tests
-    // 1. Check regular Mode
-    
-    TEST(AutoCruise,NormalMode) { 
+
+    //! Tests
+    //! 1. Check operation in regular Mode : 
+    //! No status is set with respect to CC/ACC
+   
+    TEST(RegularMode,Basic) { 
         Manager m;
 
         Car car("Viserion"); 
@@ -145,9 +146,10 @@ namespace {
         EXPECT_EQ(driver.get_CC_status(),0);
         
     }
-    
-    // 2. Check CC Mode with changing  speed
-        TEST(AutoCruise,CCMode) { 
+   
+    //! 2. Check operation of CC Mode: 
+    //! The set Speed is not Set and CC runs on default 
+        TEST(CCMode,Basic) { 
         Manager m;
         Car car("Rhaegal"); 
         CruiseControl cc("Control");
@@ -158,8 +160,6 @@ namespace {
         Channel des_speed("DesSpeed");
 
         driver.set_CC_on(1);
-        //driver.set_car_type(CC);
-        //Desired speed not set , so running on default CC desired speed
 
         m.schedule(car, 100_ms)
         .schedule(cc, 100_ms)
@@ -174,9 +174,14 @@ namespace {
         EXPECT_EQ(driver.get_car_type(),CC);
         EXPECT_EQ(driver.get_ACC_status(),0);        
         EXPECT_EQ(driver.get_CC_status(),1);
-    }   
-    // 3. Check ACC mode with changing  speed
-        TEST(AutoCruise,Construction2) { 
+        EXPECT_NEAR(car.get_velocity(),50,tolerance);
+    }  
+    // 3. Check operation in ACC mode : 
+    //! Desired speed not set , so running on default ACC desired speed
+    //! Desired safety distance is not set , on default safety distance
+    //! Simple case with no obstacles detected during the ride 
+    //! obstacle distance very high by default if not set
+    TEST(AutoCruise,Basic) { 
         Manager m;
 
         Car car("Drogon"); 
@@ -189,14 +194,8 @@ namespace {
         Channel des_speed("DesSpeed");
         Channel safetydistance("SafetyDistance");
 
-        
-        //driver.set_car_type(ACC); //Driver picks up car of his choice REGULAR,CC,ACC
         driver.set_ACC_on(1);   //Sets ACC_on 
-        //Desired speed not set , so running on default CC desired speed
-        //Desired safety distance is not set , on default safety distance
-        //Simple case with no obstacles detected during the ride //obstacle distance very high by default if not set
-
-
+    
         m.schedule(car, 100_ms)
         .schedule(acc,100_ms)
         .schedule(driver, 5_s)
@@ -212,11 +211,13 @@ namespace {
         EXPECT_EQ(driver.get_car_type(),ACC);
         EXPECT_EQ(driver.get_ACC_status(),1);        
         EXPECT_EQ(driver.get_CC_status(),0);
+        EXPECT_NEAR(car.get_velocity(),50,tolerance);
     }
     
-
-    //4. CC with desired speed varied, also checking switching off CC and switching to REGULAR mode
-     TEST(AutoCruise,CCModeVariedSpeed) { 
+    //! 4. CC with desired speed set:
+    //! Driver changes desired_speed from 40 to 60 after switching off
+    //! Driver finally switches off CC and runs Car in Regular Mode
+     TEST(CCMode,VariedSpeed) { 
         Manager m;
         Car car("Rhaegal"); 
         CruiseControl cc("Control");
@@ -227,10 +228,8 @@ namespace {
         Channel des_speed("DesSpeed");
 
         driver.set_CC_on(1);
-        //driver.set_car_type(CC);
-
-        //Desired speed not set , so running on default CC desired speed
         driver.set_desired_speed(40);
+
         m.schedule(car, 100_ms)
         .schedule(cc, 100_ms)
         .schedule(driver, 5_s)
@@ -238,9 +237,9 @@ namespace {
         .add_channel(velocity)
         .add_channel(des_speed)
         .init()
-        .use_simulated_time();
-        EXPECT_EQ(driver.get_desired_speed(),40);
-        m.run(40_s);
+        .use_simulated_time()
+        .run(40_s);
+
         EXPECT_EQ(driver.get_desired_speed(),40);
         EXPECT_NEAR(car.get_velocity(),40,tolerance);
         EXPECT_EQ(driver.get_car_type(),CC);
@@ -256,13 +255,16 @@ namespace {
 
         driver.set_CC_on(0);
         m.run(20_s);
-        EXPECT_GT(car.get_velocity(),60);
+        EXPECT_GT(car.get_velocity(),60); //Due to constant accped at 45.
         EXPECT_EQ(driver.get_car_type(),REGULAR);
         EXPECT_EQ(driver.get_ACC_status(),0);        
         EXPECT_EQ(driver.get_CC_status(),0);
     }   
-    //5. ACC with desired speed varied , Also checking switching off ACC
-     TEST(AutoCruise,ACCModeVariedSpeed) { 
+
+    //! 5. CC with desired speed set:
+    //! Driver changes desired_speed from 40 to 60 after switching off
+    //! Driver finally switches off CC and runs Car in Regular Mode
+     TEST(AutoCruise,VariedSpeed) { 
          Manager m;
         Car car("Drogon"); 
         Driver driver("Khaleesi");
@@ -274,8 +276,6 @@ namespace {
         Channel des_speed("DesSpeed");
         Channel safetydistance("SafetyDistance");
 
-        
-        //driver.set_car_type(ACC); //Driver picks up car of his choice REGULAR,CC,ACC
         driver.set_ACC_on(1);   
         driver.set_desired_speed(40);
 
@@ -288,17 +288,17 @@ namespace {
         .add_channel(des_speed)
         .add_channel(safetydistance)
         .init()
-        .use_simulated_time();
-        EXPECT_EQ(driver.get_desired_speed(),40);
-        m.run(40_s);
+        .use_simulated_time()
+        .run(40_s);
+
         EXPECT_EQ(driver.get_desired_speed(),40);
         EXPECT_NEAR(car.get_velocity(),40,tolerance);
         EXPECT_EQ(driver.get_car_type(),ACC);
         EXPECT_EQ(driver.get_ACC_status(),1);        
         EXPECT_EQ(driver.get_CC_status(),0);
      
-
         driver.set_desired_speed(60);
+
         m.run(40_s);
         EXPECT_NEAR(car.get_velocity(),60,tolerance);
         EXPECT_EQ(driver.get_car_type(),ACC);
@@ -306,6 +306,7 @@ namespace {
         EXPECT_EQ(driver.get_CC_status(),0);
 
         driver.set_ACC_on(0);
+
         m.run(20_s);
         EXPECT_GT(car.get_velocity(),60);
         EXPECT_EQ(driver.get_car_type(),REGULAR);
@@ -313,10 +314,9 @@ namespace {
         EXPECT_EQ(driver.get_CC_status(),0);
     } 
 
-
-    // 6. Check ACC with constant set speed and obstacle detection
-     TEST(AutoCruise,ACCModeSetSpeedwithObstacle) { 
-        
+    //! 6. Car enabled with ACC and set to constant set speed of 40kph and safe distance of 4km.
+    //! When obstacle is detected the Car reduces speed even if it is in ACC mode
+    TEST(AutoCruise,ObstacleDetection) { 
         Manager m;
         Car car("Drogon"); 
         Driver driver("Khaleesi");
@@ -328,11 +328,9 @@ namespace {
         Channel des_speed("DesSpeed");
         Channel safetydistance("SafetyDistance");
 
-        
-        //driver.set_car_type(ACC); //Driver picks up car of his choice REGULAR,CC,ACC
         driver.set_ACC_on(1);   
         driver.set_desired_speed(40);
-        driver.set_safe_distance(4); //any obstacle more than 5 is ok and should not reduce speed
+        driver.set_safe_distance(4); //any obstacle more than or equal to 4 is ok and car should not reduce speed
         sens.set_obstacle_dist(4);      //Obstacle is at safe distance and is moving
 
         m.schedule(car, 100_ms)
@@ -344,13 +342,12 @@ namespace {
         .add_channel(des_speed)
         .add_channel(safetydistance)
         .init()
-        .use_simulated_time();
-        m.run(40_s);
-        //std::cout<<"Safe Distance set by Driver : "<<driver.get_safe_distance()<<"\n";
-        //std::cout<<"Obstacle at a distance of "<<sens.get_obstacle_dist()<<"from the car\n";
+        .use_simulated_time()
+        .run(38_s);
+     
         if(driver.get_safe_distance()<=sens.get_obstacle_dist()){
             EXPECT_EQ(driver.get_desired_speed(),40);
-            EXPECT_NEAR(car.get_velocity(),40,5); 
+            EXPECT_NEAR(car.get_velocity(),40,1); 
         }
         else{
             EXPECT_EQ(driver.get_desired_speed(),40);
@@ -359,14 +356,12 @@ namespace {
         
         EXPECT_EQ(driver.get_car_type(),ACC);
         EXPECT_EQ(driver.get_ACC_status(),1);        
-        EXPECT_EQ(driver.get_CC_status(),0);
-        
-
+        EXPECT_EQ(driver.get_CC_status(),0);      
     } 
 
-
-    // 7. Check CC with changing set speed 
-    TEST(AutoCruise,CCModeAutoVariedSpeed) { 
+    //! 7. Check CC with changing set speed 
+    //! The Driver cycles between 50 to 70kph
+    TEST(CCMode,SimulatedDriver) { 
         Manager m;
         Car car("Rhaegal"); 
         CruiseControl cc("Control");
@@ -377,28 +372,27 @@ namespace {
         Channel des_speed("DesSpeed");
 
         driver.set_CC_on(1);
-        //driver.set_car_type(CC);
-
-        //Desired speed is cycled between 50 to 60 by simulated driver class
         
         m.schedule(car, 100_ms)
         .schedule(cc, 100_ms)
-        .schedule(driver, 5_s)
+        .schedule(driver, 8_s)
         .add_channel(throttle)
         .add_channel(velocity)
         .add_channel(des_speed)
         .init()
         .use_simulated_time();
-        m.run(60_s);
+        m.run(64_s);
+
+        EXPECT_NEAR(car.get_velocity(),60,tolerance);
         EXPECT_EQ(driver.get_car_type(),CC);
         EXPECT_EQ(driver.get_ACC_status(),0);        
         EXPECT_EQ(driver.get_CC_status(),1);
 
     }   
 
-    //8. Check ACC with changing set speed , no obstacle, simulated driver cycling between 50 - 30 
-    TEST(AutoCruise,ACCModeAutoSetSpeedwithNoObstacle) { 
-        
+    //!! 8. Check ACC with changing set speed , no obstacle, simulated driver cycling between 50 - 30 
+    //! Radar's default obsracle_dtsance is 100 if not set, so no Obstacle in this case
+    TEST(AutoCruise,SimulatedDriver) { 
         Manager m;
         Car car("Drogon"); 
         SimACCDriver driver("Khaleesi");
@@ -410,36 +404,35 @@ namespace {
         Channel des_speed("DesSpeed");
         Channel safetydistance("SafetyDistance");
 
-        
-        //driver.set_car_type(ACC); //Driver picks up car of his choice REGULAR,CC,ACC
         driver.set_ACC_on(1);   
+        driver.set_safe_distance(4); //any obstacle farther than 4 is ok and Car should not reduce speed
         
-        driver.set_safe_distance(4); //any obstacle more than 5 is ok and should not reduce speed
-        
-
         m.schedule(car, 100_ms)
         .schedule(acc,100_ms)
-        .schedule(driver, 5_s)
+        .schedule(driver, 10_s)
         .schedule(sens,1_s)
         .add_channel(throttle)
         .add_channel(velocity)
         .add_channel(des_speed)
         .add_channel(safetydistance)
         .init()
-        .use_simulated_time();
-        m.run(40_s);
-        
+        .use_simulated_time()
+        .run(50_s);
+        EXPECT_NEAR(car.get_velocity(),50,tolerance);
         EXPECT_EQ(driver.get_car_type(),ACC);
         EXPECT_EQ(driver.get_ACC_status(),1);        
         EXPECT_EQ(driver.get_CC_status(),0);
         EXPECT_EQ(driver.get_safe_distance(),4);
-        EXPECT_EQ(sens.get_obstacle_dist(),100);
-        
-
+        EXPECT_EQ(sens.get_obstacle_dist(),100);      
     } 
-    
-    //9. Check ACC with changing set distance
-        TEST(AutoCruise,ACCModeAutoSetSpeedwithAutoSetDistance) { 
+   
+    //! 9. ACC operation with a Simulated Driver with desired_speed set to 50
+    //! the Simulated driver cycles between changing safety distance between 4 and 6
+    //! The obstacle is constant at 5.
+    //! ACC slows down when obstacle is found within the safety distance set.
+    //! when sfdist = 6, speed should increase towards 50
+    //! otherwise it should decrease (but not less than lowspeed)
+    TEST(AutoCruise,VaryingSafetyDistance) { 
         
         Manager m;
         Car car("Drogon"); 
@@ -461,7 +454,7 @@ namespace {
 
         m.schedule(car, 100_ms)
         .schedule(acc,100_ms)
-        .schedule(driver, 5_s)
+        .schedule(driver, 10_s)
         .schedule(sens,1_s)
         .add_channel(throttle)
         .add_channel(velocity)
@@ -477,17 +470,21 @@ namespace {
         EXPECT_EQ(sens.get_obstacle_dist(),5);
         
         if(driver.get_safe_distance()<=sens.get_obstacle_dist()){
-            EXPECT_NEAR(car.get_velocity(),40,2);
+            EXPECT_NEAR(car.get_velocity(),30,tolerance); //set speed
         }
         else{
-            EXPECT_NEAR(car.get_velocity(),10,2);
+            EXPECT_NEAR(car.get_velocity(),10,tolerance); //low speed
         }
         
 
     }
-    
-    //10. Check ACC with combination of changing speed and set distance
-     TEST(AutoCruise,ACCModewithVariedSpeedwithObstacle) { 
+
+    //! 10. Check ACC with combination of changing speed and set distance.
+    //! The Simulated Driver sets ACC_on and cycles between 50 -30kph
+    //! The safe distance is set to 4.
+    //! Obstacle is simulated to move 15 units away from Car and reset to 3 units away.
+    //! 
+     TEST(AutoCruise,ACCFullTest) { 
         Manager m;
         Car car("Drogon"); 
         SimACCDriver driver("Khaleesi");
@@ -508,29 +505,33 @@ namespace {
 
         m.schedule(car, 100_ms)
         .schedule(acc,100_ms)
-        .schedule(driver, 5_s)
+        .schedule(driver, 10_s)
         .schedule(sens,1_s)
         .add_channel(throttle)
         .add_channel(velocity)
         .add_channel(des_speed)
         .add_channel(safetydistance)
         .init()
-        .use_simulated_time();
-        m.run(40_s);
+        .use_simulated_time()
+        .run(60_s);
      
-        
+        if(driver.get_safe_distance()<=sens.get_obstacle_dist()){
+            EXPECT_NEAR(car.get_velocity(),30,tolerance); //set speed
+        }
+        else{
+            EXPECT_NEAR(car.get_velocity(),10,tolerance); //low speed
+        }
         EXPECT_EQ(driver.get_car_type(),ACC);
         EXPECT_EQ(driver.get_ACC_status(),1);        
         EXPECT_EQ(driver.get_CC_status(),0);
         EXPECT_EQ(driver.get_safe_distance(),4);
         
-
     } 
     
-
-
-    // 13. Switching from Regular to CC
-    TEST(AutoCruise,NormalModetoCCtoACC) { 
+    //! 11. Switching from Regular to CC
+    //! Switching from CC to ACC
+    //by changing CC_on and ACC_on
+    TEST(Regular,ToCCtoACC) { 
         Manager m;
 
         Car car("Viserion"); 
@@ -574,8 +575,10 @@ namespace {
         
     }
 
-    // 14. Switching from Regular to ACC
-    TEST(AutoCruise,NormalModetoACCtoCC) { 
+    //! 12. Switching from Regular to ACC
+    //! and ACC to CC
+    //by changing CC_on and ACC_on
+    TEST(Regular,ToACCtoCC) { 
         Manager m;
 
         Car car("Viserion"); 
@@ -624,29 +627,5 @@ namespace {
         EXPECT_EQ(driver.get_CC_status(),1);
         
     }
-
-//17. EXceptions:
-        //Edge Case what happens if he sets car_yype something else - cant select car type , only can set cc/acc
-        // IF car is selected as ACC and CC is on , how should it reatc ?? - DONE
-        // if any other car type is presssed  how to react - throws error 
-        // if both ACC and CC is on 
-        // if AA/CC with nothing on 
-        //DONE
-
-
-
-    
-    //Clean up code 
-    // 12. Doxygen
-    // 13. Readme
-    // 11. Block Diagram
-    // Graph plotting
-    // 14. Ncurses
-    
-
-    // More tests go here. You should aim to test every
-    // method of every object, either directly or indirectly,
-    // although testing user interfaces is notoriously 
-    // difficult.
 
 }

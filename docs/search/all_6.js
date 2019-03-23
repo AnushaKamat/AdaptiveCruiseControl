@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['get',['get',['../classelma_1_1Client.html#a6ff6393c0340293b95deb3e467e13d88',1,'elma::Client']]]
+  ['set_5facc_5fon',['set_ACC_on',['../classdriving__environment_1_1Driver.html#a3acd00927d0119f4d95ddf7a9880c73e',1,'driving_environment::Driver']]],
+  ['set_5faccped',['set_accped',['../classdriving__environment_1_1Driver.html#a4d084e1dd20e140a317e1cafe224298e',1,'driving_environment::Driver']]],
+  ['set_5fcar_5ftype',['set_car_type',['../classdriving__environment_1_1Driver.html#a724e8b4d5bb5e999536f31ab53701b33',1,'driving_environment::Driver']]],
+  ['set_5fcc_5fon',['set_CC_on',['../classdriving__environment_1_1Driver.html#ad9095a9938dcf62337bd279518de6300',1,'driving_environment::Driver']]],
+  ['set_5fdesired_5fspeed',['set_desired_speed',['../classdriving__environment_1_1Driver.html#ae884f23e48b95f0eefd10acf23bf6606',1,'driving_environment::Driver']]],
+  ['set_5fsafe_5fdistance',['set_safe_distance',['../classdriving__environment_1_1Driver.html#a2fe63a3be35066c49d895ee3d8d6fa8d',1,'driving_environment::Driver']]],
+  ['start',['start',['../classdriving__environment_1_1AutoCruiseControl.html#a96dda1766177c2e3cead47b6af5b97be',1,'driving_environment::AutoCruiseControl::start()'],['../classdriving__environment_1_1Car.html#a6451c4efaec7812fccec8bdb2a71bb9f',1,'driving_environment::Car::start()'],['../classdriving__environment_1_1CruiseControl.html#ac741af59589a8878c8ef468c0446ea2f',1,'driving_environment::CruiseControl::start()'],['../classdriving__environment_1_1Driver.html#a2ee46d2df79fb12371a1ed0fd91168cf',1,'driving_environment::Driver::start()'],['../classdriving__environment_1_1Radar.html#aff612fca970d5bfce1c9788b48cbb412',1,'driving_environment::Radar::start()']]],
+  ['stop',['stop',['../classdriving__environment_1_1AutoCruiseControl.html#af4cfd7a19d0a30664e4f433a7f72320d',1,'driving_environment::AutoCruiseControl::stop()'],['../classdriving__environment_1_1Car.html#ad6466657b17364440c32bf16c71ef438',1,'driving_environment::Car::stop()'],['../classdriving__environment_1_1CruiseControl.html#afd14b79410dad2934208b45f667242e0',1,'driving_environment::CruiseControl::stop()'],['../classdriving__environment_1_1Driver.html#a77413eb9368dfbe51560a495b3442fa2',1,'driving_environment::Driver::stop()'],['../classdriving__environment_1_1Radar.html#ac28c7435d7d22b2de10d637b81c7b54c',1,'driving_environment::Radar::stop()']]]
 ];

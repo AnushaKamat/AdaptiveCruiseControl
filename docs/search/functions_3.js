@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['delta',['delta',['../classelma_1_1Process.html#ae2c6efe05132c558fe44c0cf301113e2',1,'elma::Process']]],
-  ['doorclosedoff',['DoorClosedOff',['../classmicrowave__example_1_1DoorClosedOff.html#adc28996dff5bce6438b2640eccd46d35',1,'microwave_example::DoorClosedOff']]],
-  ['doorclosedon',['DoorClosedOn',['../classmicrowave__example_1_1DoorClosedOn.html#ab2e88cb412c6000e6f97aa6477314e7b',1,'microwave_example::DoorClosedOn']]],
-  ['dooropen',['DoorOpen',['../classmicrowave__example_1_1DoorOpen.html#ada10a7c5bf36b1e97a679058a4fca8fb',1,'microwave_example::DoorOpen']]],
-  ['driver',['Driver',['../classdriving__example_1_1Driver.html#ae7b8d5878f63e5c4376ffa9eadb0c62e',1,'driving_example::Driver']]],
-  ['during',['during',['../classelma_1_1State.html#aa4ff01f2cd8c6e78d90461f6a5d914c4',1,'elma::State::during()'],['../classmicrowave__example_1_1DoorClosedOff.html#a128ff3a479f5226e5d7d167179a4a35c',1,'microwave_example::DoorClosedOff::during()'],['../classmicrowave__example_1_1DoorClosedOn.html#a82d9845114add5930f2c00ae6f3ddec7',1,'microwave_example::DoorClosedOn::during()'],['../classmicrowave__example_1_1DoorOpen.html#a5b67f0f78ec7d1881494e70c5933f299',1,'microwave_example::DoorOpen::during()'],['../classtoggle__switch__example_1_1Mode.html#a8e29db751bc6e110d802c60bc17c370d',1,'toggle_switch_example::Mode::during()']]]
+  ['get_5facc_5fstatus',['get_ACC_status',['../classdriving__environment_1_1Driver.html#a12ce9702fcfcba7c3c4104f869622870',1,'driving_environment::Driver']]],
+  ['get_5faccped',['get_accped',['../classdriving__environment_1_1Driver.html#a17ae5f17846a9aa010391aa2fad3df97',1,'driving_environment::Driver']]],
+  ['get_5fcar_5ftype',['get_car_type',['../classdriving__environment_1_1Driver.html#aec0bce638ae7ea4ad8538cbb67405868',1,'driving_environment::Driver']]],
+  ['get_5fcc_5fstatus',['get_CC_status',['../classdriving__environment_1_1Driver.html#a5dea6d50beee83a9990a080a74a45e57',1,'driving_environment::Driver']]],
+  ['get_5fdesired_5fspeed',['get_desired_speed',['../classdriving__environment_1_1Driver.html#af5eedb158f3f13eadd90bdc2c8d5b857',1,'driving_environment::Driver']]],
+  ['get_5fsafe_5fdistance',['get_safe_distance',['../classdriving__environment_1_1Driver.html#a7b98d1ce91dd6289fdce86afde6625cf',1,'driving_environment::Driver']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Elma: Main Page</title>
+<title>Adaptive Cruise Control: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -24,7 +24,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Elma
+   <div id="projectname">Adaptive Cruise Control
    </div>
    <div id="projectbrief">An event loop manager for embedded systems</div>
   </td>
@@ -65,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -76,47 +76,150 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Elma Documentation</div>  </div>
+<div class="title">Adaptive Cruise Control Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Elma is an event loop and process manager for embedded systems. Elma is structured as a C++ library of classes on top of which you build your own C++ project. It keeps track of processes, finite state machines, events, and communication channels, executing them at specified frequencies. Elma was developed as part of the University of Washington's <a href="https://github.com/klavins/ECEP520">ECE P 520 course</a> on advanced embedded systems programming. More information on how Elma was designed can be found in the links below:</p><ul>
-<li><a href="https://github.com/klavins/ECEP520/tree/master/week_6">Event loop management</a></li>
-<li><a href="https://github.com/klavins/ECEP520/tree/master/week_7">Events and finite state machines</a></li>
-<li><a href="https://github.com/klavins/ECEP520/blob/master/week_8">HTTP in event loops</a></li>
+<div class="textblock"><h2>Scenario </h2>
+<p>Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.</p>
+<h2>In-depth Design and Working </h2>
+<p>The project models a Car which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver. The modes the Car can be driven into are as below:</p><ul>
+<li>Regular Mode (<code>REGULAR</code>): <code>Driver</code> has to press acceleration pedal and Car moves in proportion to it.Default Conditions: Acceleration pedal(<code>accped</code>) is set to 15. Just for simulation.</li>
+<li>Cruise Control Mode (<code>CC</code>) : <code>Driver</code> has to switch on a <code>CC_on</code> switch, to put the Car into <code>CC</code> mode.Driver sets a <code>desired_speed</code> at which he would like the Car to cruise on.Default Conditions : The <code>desired_speed</code> if not set by driver while being in <code>CC</code> mode is set to 50</li>
+<li>Adaptive Cruise Control Mode(<code>ACC</code>): <code>Driver</code> has to switch on a <code>ACC_on</code> switch, to put the Car into <code>ACC</code> mode.Driver sets a desired_speed at which he would like the Car to cruise on and sets a safety distance <code>sfdist</code> which allows the <code>Car</code> to cruise at set <code>desired_speed</code> if no obstacle is within that distance.Default Conditions : The <code>desired_speed</code> if not set by driver while being in CC mode is set to 50 and <code>sfdist</code> is set 5.</li>
 </ul>
-<h1>Installation </h1>
-<p>The source code for Elma <a href="https://github.com/klavinslab/elma">is on Github</a>.</p>
+<p>Edge Cases:</p><ul>
+<li>The Car if not exclusively set to a different mode by driver, runs in REGULAR mode.</li>
+<li>If both <code>ACC_on</code> and <code>CC_on</code> are switched on at the same time then, <code>ACC</code> mode is set with <code>ACC_on</code> being 1 and <code>CC_on</code> being forced to 0.</li>
+</ul>
+<p>The <code>CruiseControl</code> module gets the <code>velocity</code> of <code>Car</code> and <code>desired_speed</code> set by <code>Driver</code>.If the <code>CC_on</code> is switched on,i.e; if <code>Car</code> is in <code>CC</code> mode, it computes the change in force that needs to be applied so the Car keeps moving with <code>desired_speed</code> using the proportional control law. The computed result is sent over Throttle channel</p>
+<p>The <code>AutoCruiseControl</code> module gets activated when <code>ACC_on</code> is set by the <code>Driver</code> and the <code>Car</code> is in <code>ACC</code> mode. It gets the current <code>velocity</code> of <code>Car</code> and procures <code>desired_speed</code> and safety distance <code>sfdist</code>set by <code>Driver</code>.Also it is interrupted by <code>Radar</code> module which provides it with information about how far is the obstacle sensed is at. <code>ACC</code> module cruises on the set <code>desired_speed</code> if there are no obstacles within <code>sfdist</code> set by driver. If an obstacle is found then it decreases its speed to avoid collision and once the obstacle is no more in the safe distance range, it continues to cruise on <code>desired_speed</code>.Also as a safety feature, the <code>ACC</code> does not go below the <code>lowspeed</code> value. A helper class module <code>Radar</code> is created which emits the obstacle distance.This has to be set by user while testing and by default the obstacle distance is set high to give a sense of no obstacles are present.</p>
+<h2>Design Details/Working(Added on 3/17): </h2>
+<ul>
+<li>Cruise Control is being redesigned.<ul>
+<li>Driver sets Cruise On/Off which is emitted as an event to CruiseControl class</li>
+<li>When CC is switched on , the driver also sets the desired speed which is sent over the channel.</li>
+<li>CruiseControl class has an handler for change in <code>CC_on</code></li>
+<li>CruiseControl class sets the value of throttle accordingly and sends it over channel to the Car class.</li>
+<li>Car class, depending on the current velocity of the car and new throttle value, sets the new speed of the car.</li>
+</ul>
+</li>
+<li><p class="startli">Adaptive Cruise Control is designed in the class <code>AutoCruiseControl</code>.</p><ul>
+<li>Driver switches on <code>ACC_on</code> switch to enable Adaptive Cruise Control to kick in.This triggers an event.</li>
+<li>When ACC is switched on, Driver has to set desired speed and safety distance.</li>
+<li>In AutoCruiseControl class, depending on <code>ACC status</code> event, the desired speed, safety distance and current velocity of Car is read in.</li>
+<li>In addition to this, ACC is being catered to by another class called Radar inherited from Process. Radar sends the distance from the car to the next obstacle.</li>
+<li>In ACC, if obstacle is farther than safety distance, the ACC keeps cruising at the same desired speed set by the driver.</li>
+<li>If ACC finds that obstacle is in the range of safety distance set, in order to prevent damage, it decreases the desired speed in proportion to the distance between obstacle and safe distance of Car, until it can maintain the safe distance from the obstacle. <br />
+</li>
+</ul>
+<p class="startli">Assumptions: <br />
+ The obstacle is also contsantly moving wrt to car either at slow speed or higher speed than that of ACC car.</p>
+</li>
+</ul>
+<h2>Implementation Details </h2>
+<ul>
+<li>Car would be inherited by a process class</li>
+<li>Cruise Control would be inherited by a process class</li>
+<li><p class="startli">Adaptive Cruise Control would be inherited either by Cruise Control/Process(Design choice).</p>
+<p class="startli">It will set Adaptive Cruise control speed depending on</p><ul>
+<li>speed set by driver</li>
+<li>another car/obstacle in the safety distance</li>
+</ul>
+</li>
+<li>Driver would be inherited by process class with below operations in scope<ul>
+<li>set speed</li>
+<li>set safety distance</li>
+<li>set the Car into different Modes</li>
+</ul>
+</li>
+</ul>
+<h2>Milestones </h2>
+<ol type="1">
+<li>Talk to Professor about the project and it's feasibility. Date : 03/09 -DONE</li>
+<li>Create ACC class and share events between driver, car and ACC. Date : 03/13<br />
+ DONE :<br />
+<ul>
+<li>3/15 : Cruise Control is modified/ Simulated Time run is created<br />
+</li>
+<li>3/16 : Different Classes for CC and ACC. Driver Class is modified to accomodate different driving styles.</li>
+</ul>
+</li>
+<li>Create driving environment where another interacts with car enabled with ACC. Date : 03/17<br />
+ DONE : <br />
+<ul>
+<li>3/17 : Tested the driving scenarios using the environment.<br />
+</li>
+<li>3/19 : Modularise ACC example with different classes in different files.<br />
+</li>
+<li>3/19 : Adapt to ELMA project Folder structure. <br />
+</li>
+<li>3/20 : Check the new pull for Simulated Run and compare with existing one. <br />
+</li>
+</ul>
+</li>
+<li>Write the test cases and get the testing done.<br />
+ DONE:<br />
+<ul>
+<li>03/20 : Multiple Test cases have been written.<ul>
+<li>Checks Regular , CC and ACC mode separately</li>
+<li>Checks transistion from one mode to other.</li>
+<li>Checks CC with change in desired speed set by driver</li>
+<li>Checks ACC with chanage in desired speed set by driver</li>
+<li>Checks ACC with change in desired safety distance set by driver</li>
+<li>Checks ACC with combination of change in desired speed and safety distance</li>
+<li>Created a simulation of obstacle to check ACC speed decrease in case of obstacle detection.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Submit documentation with tests. Date : 03/22 - DONE</li>
+</ol>
+<h2>Strech Goals </h2>
+<ol type="1">
+<li>Interaction of car enabled with ACC with a regular car.<br />
+ DONE: Interaction of ACC enabled car with moving obstacle is met. Obstacle is modelled as a part of Radar capabilities.</li>
+<li>Car with Camera function and not ACC. - which could read sign boards and change the speed of car dynamically till driver intervenes.<ul>
+<li>Dealt with 3 cases and did not venture into Car with Camera.</li>
+</ul>
+</li>
+<li>Simulation of Car with respect to ACC enabled Car.<ul>
+<li>DONE(Partially) : Modified it to deal ACC enabled car with any moving obstacle, havent modelled obstacle exactly as a car. But could be perceived as one. See Test Cases.</li>
+</ul>
+</li>
+<li>Plot of distance covered by regular car vs the distance covered by ACC enabled car wrt time.(depicting its speed curve)<ul>
+<li>Provided</li>
+</ul>
+</li>
+<li>[3/17] Consider having a UI using ncurses.<ul>
+<li>Started working on it but felt many things have to be modelled for the display.</li>
+</ul>
+</li>
+</ol>
+<h2>Installation </h2>
+<p>The source code for Elma <a href="https://github.com/klavinslab/elma">is on Github</a>. Also forked in this project. It is being directly used with help of docker as shown below.</p>
 <h2>From Dockerhub </h2>
-<p>To get started, you need a C++ build environment. We have provided one with the Docker container <code>elma</code>, which you can use as follows: </p><pre class="fragment">git clone https://github.com/klavinslab/elma.git
-cd elma
-docker run -v $PWD:/source -it klavins/ecep520:elma bash
+<p>To get started, you will need a C++ build environment. The Docker container <code>elma</code> is available on Dockerhub, which can be used as follows: </p><pre class="fragment">git clone https://github.com/AnushaKamat/AdaptiveCruiseControl.git
+cd AdaptiveCruiseControl
+docker run -v $PWD:/source -it klavins/elma:latest bash
 make
-examples/bin/basic
-</pre><h2>From the Dockerfile </h2>
-<p>You can also build the docker environment, described in env/Dockerfile, yourself with the following commands: </p><pre class="fragment">git clone https://github.com/klavinslab/elma.git
-cd elma
-docker build -t myelma env
-docker run -v $PWD:/source -it myelma bash
-make
-examples/bin/basic
-</pre><h2>Manual Installation </h2>
-<p>To install Elma without using Docker, you will need the following tools:</p><ul>
-<li><a href="https://gcc.gnu.org/">gcc</a> 4.9 or an equivalent C/C++ compiler that supports at least C++14</li>
-<li>Make (if you want to use the makefile. Alternatively, you can use some other build manager)</li>
+./bin/Regular 
+./bin/test     
+</pre><h2>References </h2>
+<p>The example of Adaptive Cruise Control is mainly built on <a href="https://github.com/klavinslab/elma">elma</a> library using following references:</p><ul>
+<li><a href="https://gcc.gnu.org/">gcc</a></li>
 <li><a href="http://www.doxygen.nl/">Doxygen</a></li>
 <li><a href="https://github.com/google/googletest">Google Test</a></li>
 <li>Neils Lohmann's JSON library: <a href="https://github.com/nlohmann/json">https://github.com/nlohmann/json</a></li>
-<li><a href="https://github.com/klavins/cpp-httplib.git">My fork</a> of <a href="https://github.com/yhirose">yhirose</a>'s HTTP library</li>
+<li><a href="https://github.com/yhirose">yhirose</a>'s HTTP library</li>
+<li>Docker Image <a href="https://hub.docker.com/r/klavins/ecep520">klavins/ecep520</a></li>
 </ul>
-<h1>Usage </h1>
-<p>See the examples in the <code>examples</code> directory for how to build new event loops with Elma.</p>
-<h1>License </h1>
+<h2>License </h2>
 <p>This software is open source and uses the MIT license. Details can be found <a href="https://github.com/klavinslab/elma">here</a>. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Tue Mar 5 2019 21:55:44 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Sat Mar 23 2019 01:27:48 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.8
   </small></address>

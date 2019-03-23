@@ -8,27 +8,23 @@ namespace driving_environment {
 
     using namespace std::chrono;
     using namespace elma;    
-
+    //! A Process class to represent a simulated sensing module to detect obstacle distance
     class Radar : public Process {
         public:
 
         //! Wrap the base process class
-        //! \param name The name of the car    
+        //! \param name The name of the sensor    
         Radar(std::string name) : Process(name) {}
-
-        //Car(std::string name,car_type model) : Process(name) {}
             
-        //! Nothing to do to initialize
+        //! Watch for events that change the status of ACC switch
         void init();
 
-        //! To start a new simulation, this process sets
-        //! the car's velocity to zero kph.    
+        //! Nothing to do to start   
         void start() {}
 
-        //! The update method gets the latest force from the 
-        //! Throttle Channel, if any. Then it updates the 
-        //! car's velocity, and sends it out on the Velocity
-        //! Channel.     
+        //! The update method checks if ACC is on , 
+        //! It emits event Obstacle 
+        //! It gives out the distance of the obstacle from car that it can sense 
         void update();
 
         //! Nothing to do to stop    
@@ -42,12 +38,9 @@ namespace driving_environment {
         }
         private:
         int obs_dist = 100;
-        int ACC_status = 0; 
-        
+        int ACC_status = 0;        
     }; 
 
-
 }
-
 
 #endif
