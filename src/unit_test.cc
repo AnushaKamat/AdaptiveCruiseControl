@@ -13,12 +13,12 @@ namespace {
 
     double tolerance = 1;
     //! Simulation classes
-    //! A Radar Class to simulate an obstacle that cycles from 7 to 3 units of distance and keep moving further
+    //! A Radar Class to simulate an obstacle that cycles from 15 to 3 units of distance and keep moving further
     class Obstacle : public Radar{
         public:
             Obstacle (std::string name) : Radar(name) {}
             void update(){
-                if(get_obstacle_dist() == 15){      //7 changed to 12 
+                if(get_obstacle_dist() == 15){      
                     set_obstacle_dist(3);
                 }
                 else{                           
@@ -261,9 +261,9 @@ namespace {
         EXPECT_EQ(driver.get_CC_status(),0);
     }   
 
-    //! 5. CC with desired speed set:
+    //! 5. ACC with desired speed set:
     //! Driver changes desired_speed from 40 to 60 after switching off
-    //! Driver finally switches off CC and runs Car in Regular Mode
+    //! Driver finally switches off ACC and runs Car in Regular Mode
      TEST(AutoCruise,VariedSpeed) { 
          Manager m;
         Car car("Drogon"); 
@@ -360,7 +360,7 @@ namespace {
     } 
 
     //! 7. Check CC with changing set speed 
-    //! The Driver cycles between 50 to 70kph
+    //! The Driver cycles between 50 to 60kph
     TEST(CCMode,SimulatedDriver) { 
         Manager m;
         Car car("Rhaegal"); 
@@ -426,11 +426,11 @@ namespace {
         EXPECT_EQ(sens.get_obstacle_dist(),100);      
     } 
    
-    //! 9. ACC operation with a Simulated Driver with desired_speed set to 50
+    //! 9. ACC operation with a Simulated Driver with desired_speed set to 30
     //! the Simulated driver cycles between changing safety distance between 4 and 6
     //! The obstacle is constant at 5.
     //! ACC slows down when obstacle is found within the safety distance set.
-    //! when sfdist = 6, speed should increase towards 50
+    //! when sfdist = 6, speed should increase towards 30
     //! otherwise it should decrease (but not less than lowspeed)
     TEST(AutoCruise,VaryingSafetyDistance) { 
         
