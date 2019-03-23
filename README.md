@@ -23,6 +23,8 @@ The `CruiseControl` module gets the `velocity` of `Car` and `desired_speed` set 
 The `AutoCruiseControl` module gets activated when `ACC_on` is set by the `Driver` and the `Car` is in `ACC` mode. It gets the current `velocity` of `Car` and procures `desired_speed` and safety distance `sfdist`set by `Driver`.Also it is interrupted by `Radar` module which provides it with information about how far is the obstacle sensed is at. `ACC` module cruises on the set `desired_speed` if there are no obstacles within `sfdist` set by driver. If an obstacle is found then it decreases its speed to avoid collision and once the obstacle is no more in the safe distance range, it continues to cruise on `desired_speed`.Also as a safety feature, the `ACC` does not go below the `lowspeed` value.
 A helper class module `Radar` is created which emits the obstacle distance.This has to be set by user while testing and by default the obstacle distance is set high to give a sense of no obstacles are present.
 
+Tests
+---
 Some of the Test Cases from [unit_test.cc](src/unit_test.cc) are graphically shown below:<br/>
 <br/>
 **Operation in Regular Mode**<br/>
