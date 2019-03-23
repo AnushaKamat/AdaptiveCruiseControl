@@ -26,7 +26,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Adaptive Cruise Control
    </div>
-   <div id="projectbrief">An event loop manager for embedded systems</div>
+   <div id="projectbrief">Simulation of Adaptive Cruise Control using ELMA</div>
   </td>
  </tr>
  </tbody>
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><h2>Scenario </h2>
 <p>Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.</p>
 <h2>In-depth Design and Working </h2>
-<p>The project models a Car which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver. The modes the Car can be driven into are as below:</p><ul>
+<p>The project models a Car :car: which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver. The modes the Car can be driven into are as below:</p><ul>
 <li>Regular Mode (<code>REGULAR</code>): <code>Driver</code> has to press acceleration pedal and Car moves in proportion to it.Default Conditions: Acceleration pedal(<code>accped</code>) is set to 15. Just for simulation.</li>
 <li>Cruise Control Mode (<code>CC</code>) : <code>Driver</code> has to switch on a <code>CC_on</code> switch, to put the Car into <code>CC</code> mode.Driver sets a <code>desired_speed</code> at which he would like the Car to cruise on.Default Conditions : The <code>desired_speed</code> if not set by driver while being in <code>CC</code> mode is set to 50</li>
 <li>Adaptive Cruise Control Mode(<code>ACC</code>): <code>Driver</code> has to switch on a <code>ACC_on</code> switch, to put the Car into <code>ACC</code> mode.Driver sets a desired_speed at which he would like the Car to cruise on and sets a safety distance <code>sfdist</code> which allows the <code>Car</code> to cruise at set <code>desired_speed</code> if no obstacle is within that distance.Default Conditions : The <code>desired_speed</code> if not set by driver while being in CC mode is set to 50 and <code>sfdist</code> is set 5.</li>
@@ -219,7 +219,7 @@ make
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Sat Mar 23 2019 01:27:48 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Sat Mar 23 2019 01:51:37 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.8
   </small></address>
