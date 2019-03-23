@@ -79,9 +79,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Adaptive Cruise Control Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Scenario </h2>
-<p>Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver presses the brake then the ACC gets switched off and is over ridden manually.When ACC is in operation and another car comes in the safe distance set by the driver then it tries to decrease the speed to maintain the distance from the car infront of it.</p>
-<h2>In-depth Design and Working </h2>
+<div class="textblock"><h2>Overview </h2>
+<p>Adaptive Cruise Control(ACC) would use the elma library to create a simulation of driving scenario. It would have a car with Adaptive Cruise Control where in the driver of the car can set the speed and safety distance for ACC. Once these parameters are set, the car runs with the set speed. In case , the driver switches off the ACC, Car gets out of ACC mode and is driven by Driver manually by providing Gas Pedal. When ACC is in operation and another car/obstacle comes in the safe distance set by the driver then it tries to decrease the speed of the Car to maintain the distance from the car/obstacle infront of it.</p>
 <p>The project models a Car :car: which is equipped with Adaptive Cruise Control Capabilities and can be driven in different modes based on the driver. The modes the Car can be driven into are as below:</p><ul>
 <li>Regular Mode (<code>REGULAR</code>): <code>Driver</code> has to press acceleration pedal and Car moves in proportion to it.Default Conditions: Acceleration pedal(<code>accped</code>) is set to 15. Just for simulation.</li>
 <li>Cruise Control Mode (<code>CC</code>) : <code>Driver</code> has to switch on a <code>CC_on</code> switch, to put the Car into <code>CC</code> mode.Driver sets a <code>desired_speed</code> at which he would like the Car to cruise on.Default Conditions : The <code>desired_speed</code> if not set by driver while being in <code>CC</code> mode is set to 50</li>
@@ -93,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 <p>The <code>CruiseControl</code> module gets the <code>velocity</code> of <code>Car</code> and <code>desired_speed</code> set by <code>Driver</code>.If the <code>CC_on</code> is switched on,i.e; if <code>Car</code> is in <code>CC</code> mode, it computes the change in force that needs to be applied so the Car keeps moving with <code>desired_speed</code> using the proportional control law. The computed result is sent over Throttle channel</p>
 <p>The <code>AutoCruiseControl</code> module gets activated when <code>ACC_on</code> is set by the <code>Driver</code> and the <code>Car</code> is in <code>ACC</code> mode. It gets the current <code>velocity</code> of <code>Car</code> and procures <code>desired_speed</code> and safety distance <code>sfdist</code>set by <code>Driver</code>.Also it is interrupted by <code>Radar</code> module which provides it with information about how far is the obstacle sensed is at. <code>ACC</code> module cruises on the set <code>desired_speed</code> if there are no obstacles within <code>sfdist</code> set by driver. If an obstacle is found then it decreases its speed to avoid collision and once the obstacle is no more in the safe distance range, it continues to cruise on <code>desired_speed</code>.Also as a safety feature, the <code>ACC</code> does not go below the <code>lowspeed</code> value. A helper class module <code>Radar</code> is created which emits the obstacle distance.This has to be set by user while testing and by default the obstacle distance is set high to give a sense of no obstacles are present.</p>
-<h2>Design Details/Working(Added on 3/17): </h2>
+<h2>Design Details </h2>
 <ul>
 <li>Cruise Control is being redesigned.<ul>
 <li>Driver sets Cruise On/Off which is emitted as an event to CruiseControl class</li>
@@ -118,21 +117,63 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 <h2>Implementation Details </h2>
 <ul>
-<li>Car would be inherited by a process class</li>
-<li>Cruise Control would be inherited by a process class</li>
-<li><p class="startli">Adaptive Cruise Control would be inherited either by Cruise Control/Process(Design choice).</p>
-<p class="startli">It will set Adaptive Cruise control speed depending on</p><ul>
-<li>speed set by driver</li>
-<li>another car/obstacle in the safety distance</li>
+<li>Car would be inherited from Process class<ul>
+<li>Sets velocity of Car depending on incoming throttle value.</li>
 </ul>
 </li>
-<li>Driver would be inherited by process class with below operations in scope<ul>
-<li>set speed</li>
-<li>set safety distance</li>
-<li>set the Car into different Modes</li>
+<li>Cruise Control would be inherited from Process class Provides appropriate throttle value to Car depending on:<ul>
+<li>desired speed set by the Driver</li>
+<li>current velocity of Car</li>
+</ul>
+</li>
+<li><p class="startli">Adaptive Cruise Control would be inherited from Process class.</p>
+<p class="startli">Provides appropriate throttle value to Car depending on:</p><ul>
+<li>desired speed set by driver</li>
+<li>proximity of another car/obstacle in the safety distance set by Driver.</li>
+<li>current velocity of Car</li>
+<li>safety critical low speed of the Car.</li>
+</ul>
+</li>
+<li>Driver would be inherited by Process class with below operations in scope<ul>
+<li>sets desired speed</li>
+<li>sets safety distance</li>
+<li>sets the Car into different Modes</li>
+<li>operates gas pedal if in Regular Mode.</li>
 </ul>
 </li>
 </ul>
+<h2>Tests </h2>
+<p>Some of the Test Cases from <a href="src/unit_test.cc">unit_test.cc</a> are graphically shown below:<br />
+ <br />
+ <b>Operation in Regular Mode</b><br />
+ Simulated from TestCase : RegularMode.Basic<br />
+ <br />
+ </p><div class="image">
+<img src="images/regular.png" />
+</div>
+<p> <br />
+ <b>Operation in Cruise Control Mode with Driver setting varying desired speed</b><br />
+ Simulated from TestCase : CCMode.SimulatedDriver using a class <code>SimCCDriver</code> derived from <code>Driver</code><br />
+ <br />
+ </p><div class="image">
+<img src="images/CC.png" />
+</div>
+<p> <br />
+ <b>Operation in Adaptive Cruise Control Mode without obstacles and Driver setting varying desired speed</b><br />
+ Simulated from TestCase : AutoCruise.SimulatedDriver using a class <code>SimACCDriver</code> derived from <code>Driver</code><br />
+ <br />
+ </p><div class="image">
+<img src="images/ACC1.png" />
+</div>
+<p> <br />
+ <b>Operation in Adaptive Cruise Control Mode with one set desired_speed and interaction with moving obstacles</b><br />
+ Simulated from TestCase : AutoCruise.ObstacleDetection using a class <code>Driver</code> and class <code>Obstacle</code> derived from class <code>Radar</code><br />
+ <br />
+ </p><div class="image">
+<img src="images/ACC.png" />
+</div>
+<p> <br />
+</p>
 <h2>Milestones </h2>
 <ol type="1">
 <li>Talk to Professor about the project and it's feasibility. Date : 03/09 -DONE</li>
@@ -219,7 +260,7 @@ make
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Sat Mar 23 2019 01:59:11 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Sat Mar 23 2019 22:30:43 for Adaptive Cruise Control by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.8
   </small></address>
