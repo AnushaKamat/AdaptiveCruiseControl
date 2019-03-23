@@ -24,6 +24,7 @@ The `AutoCruiseControl` module gets activated when `ACC_on` is set by the `Drive
 A helper class module `Radar` is created which emits the obstacle distance.This has to be set by user while testing and by default the obstacle distance is set high to give a sense of no obstacles are present.
 
 Some of the Test Cases from [unit_test.cc](src/unit_test.cc) are graphically shown below:<br/>
+<br/>
 **Operation in Regular Mode**<br/>
 Simulated from TestCase : RegularMode.Basic<br/>
 <br/>
